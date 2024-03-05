@@ -48,19 +48,19 @@ function nxt {
 	npm run lint
     } elseif ($Action -eq "prisma") {
     if ($args -contains "gen-only") {
-        npm prisma generate 
+        npx prisma generate 
     } elseif ($args -contains "push-only") {
-        npm prisma db push
+        npx prisma db push
     } else {
-        npm prisma generate 
+        npx prisma generate 
         if ($LASTEXITCODE -ne 0) { 
             Write-Error "Prisma generate failed."
             return
         }
-        npm prisma db push
+        npx prisma db push
     }     
 } else {
-        Write-Error "Invalid action. Choose: 'nxt new <project-name>', 'nxt start', 'nxt build','nxt preview', 'nxt lint' or 'nxt prisma'"
+        Write-Error "Invalid action. Choose: 'nxt new <project-name>', 'nxt start', 'nxt build','nxt preview', 'nxt lint' or 'nxt prisma - nxt prisma | nxt prisma gen-only nxt prisma push-only'"
     }
 }
 
