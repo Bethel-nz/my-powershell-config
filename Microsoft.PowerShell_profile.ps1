@@ -19,7 +19,7 @@ function nxt {
 
    if (-not $Action) { # Check if no action was provided
         Write-Host "Available nxt commands:"
-        Write-Host "  new <project-name>  -  Creates a new Next.js project"
+        Write-Host "  new | new <project-name>  -  Creates a new Next.js project"
         Write-Host "  start               -  Starts the development server"
         Write-Host "  build               -  Builds the project for production"
         Write-Host "  preview             -  Previews the production build"
