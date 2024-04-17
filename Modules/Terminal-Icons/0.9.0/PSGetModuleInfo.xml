@@ -1,0 +1,144 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">Terminal-Icons</S>
+      <S N="Version">0.9.0</S>
+      <Obj N="Type" RefId="1">
+        <TN RefId="1">
+          <T>Microsoft.PowerShell.PSResourceGet.UtilClasses.ResourceType</T>
+          <T>System.Enum</T>
+          <T>System.ValueType</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>Module</ToString>
+        <I32>1</I32>
+      </Obj>
+      <S N="Description">PowerShell module to add file icons to terminal based on file extension</S>
+      <S N="Author">Brandon Olin</S>
+      <S N="CompanyName">Community</S>
+      <S N="Copyright">(c) Brandon Olin. All rights reserved.</S>
+      <DT N="PublishedDate">2022-01-28T06:41:14.837</DT>
+      <DT N="InstalledDate">2024-03-20T11:44:21.1083453-07:00</DT>
+      <B N="IsPrerelease">false</B>
+      <Nil N="UpdatedDate" />
+      <URI N="LicenseUri">https://raw.githubusercontent.com/devblackops/Terminal-Icons/master/LICENSE</URI>
+      <URI N="ProjectUri">https://github.com/devblackops/Terminal-Icons</URI>
+      <URI N="IconUri">https://github.com/devblackops/Terminal-Icons/raw/master/media/icon_256.png</URI>
+      <Obj N="Tags" RefId="2">
+        <TN RefId="2">
+          <T>System.String[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>Color</S>
+          <S>Terminal</S>
+          <S>Console</S>
+          <S>NerdFonts</S>
+          <S>Icon</S>
+          <S>PSModule</S>
+          <S>PSFunction_Add-TerminalIconsColorTheme</S>
+          <S>PSCommand_Add-TerminalIconsColorTheme</S>
+          <S>PSFunction_Add-TerminalIconsIconTheme</S>
+          <S>PSCommand_Add-TerminalIconsIconTheme</S>
+          <S>PSFunction_Format-TerminalIcons</S>
+          <S>PSCommand_Format-TerminalIcons</S>
+          <S>PSFunction_Get-TerminalIconsColorTheme</S>
+          <S>PSCommand_Get-TerminalIconsColorTheme</S>
+          <S>PSFunction_Get-TerminalIconsGlyphs</S>
+          <S>PSCommand_Get-TerminalIconsGlyphs</S>
+          <S>PSFunction_Get-TerminalIconsIconTheme</S>
+          <S>PSCommand_Get-TerminalIconsIconTheme</S>
+          <S>PSFunction_Get-TerminalIconsTheme</S>
+          <S>PSCommand_Get-TerminalIconsTheme</S>
+          <S>PSFunction_Remove-TerminalIconsTheme</S>
+          <S>PSCommand_Remove-TerminalIconsTheme</S>
+          <S>PSFunction_Set-TerminalIconsIcon</S>
+          <S>PSCommand_Set-TerminalIconsIcon</S>
+          <S>PSFunction_Set-TerminalIconsTheme</S>
+          <S>PSCommand_Set-TerminalIconsTheme</S>
+          <S>PSFunction_Show-TerminalIconsTheme</S>
+          <S>PSCommand_Show-TerminalIconsTheme</S>
+          <S>PSIncludes_Function</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="3">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">Function</S>
+            <Nil N="Value" />
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Obj N="Value" RefId="4">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Nil N="Value" />
+          </En>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Nil N="Value" />
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="5">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Add-TerminalIconsColorTheme</S>
+                <S>Add-TerminalIconsIconTheme</S>
+                <S>Format-TerminalIcons</S>
+                <S>Get-TerminalIconsColorTheme</S>
+                <S>Get-TerminalIconsGlyphs</S>
+                <S>Get-TerminalIconsIconTheme</S>
+                <S>Get-TerminalIconsTheme</S>
+                <S>Remove-TerminalIconsTheme</S>
+                <S>Set-TerminalIconsIcon</S>
+                <S>Set-TerminalIconsTheme</S>
+                <S>Show-TerminalIconsTheme</S>
+              </LST>
+            </Obj>
+          </En>
+        </DCT>
+      </Obj>
+      <S N="PowerShellGetFormatVersion"></S>
+      <S N="ReleaseNotes">https://raw.githubusercontent.com/devblackops/Terminal-Icons/master/CHANGELOG.md</S>
+      <Obj N="Dependencies" RefId="7">
+        <TN RefId="4">
+          <T>Microsoft.PowerShell.PSResourceGet.UtilClasses.Dependency[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <Obj N="AdditionalMetadata" RefId="8">
+        <TNRef RefId="0" />
+        <MS>
+          <S N="NormalizedVersion">0.9.0</S>
+          <S N="IsPrerelease">False</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\DELL\Documents\PowerShell\Modules</S>
+    </MS>
+  </Obj>
+</Objs>

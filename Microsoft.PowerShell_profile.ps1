@@ -1,5 +1,5 @@
 ##Invoke-Expression (&starship init powershell)
-oh-my-posh init pwsh --config 'C:\Users\Bethel\Documents\PowerShell\zash.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config 'C:\Users\DELL\Documents\Powershell\zash.omp.json' | Invoke-Expression
 
 Import-Module z
 Import-Module -Name Terminal-Icons
@@ -7,14 +7,14 @@ Import-Module -Name Terminal-Icons
 # Alias
 Set-Alias -Name vim -Value nvim
 Set-Alias g git
-Set-Alias editor code-insiders
-
+Set-Alias editor code
 
 #Functions
 function nxt {
     param(
         [string]$Action,
-        [string]$AppName  
+        [string]$AppName,
+	  [switch]$yarn  
     )
 
    if (-not $Action) { # Check if no action was provided
@@ -36,38 +36,110 @@ function nxt {
     }
 
 
-    if ($Action -eq "new") {
-      npx create-next-app@latest $AppName
-    } elseif ($Action -eq "dev") {
-        npm run dev
-    } elseif ($Action -eq "build") {
-        npm run build
-    } elseif ($Action -eq "preview") {
-        npm run start
-    } elseif($Action -eq "lint"){
-	npm run lint
-    } elseif ($Action -eq "prisma") {
-    if ($args -contains "gen-only") {
-        npx prisma generate 
-    } elseif ($args -contains "push-only") {
-        npx prisma db push
-    } else {
-        npx prisma generate 
-        if ($LASTEXITCODE -ne 0) { 
-            Write-Error "Prisma generate failed."
-            return
+    
+    switch ($Action ) {
+        "new" {
+            if ($yarn) { 
+                yarn create next-app $AppName
+            } else {
+                npx create-next-app@latest $AppName
+            }
         }
-        npx prisma db push
-    }     
-} else {
-        Write-Error "Invalid action. Choose: 'nxt new <project-name>', 'nxt start', 'nxt build','nxt preview', 'nxt lint' or 'nxt prisma - nxt prisma | nxt prisma gen-only nxt prisma push-only'"
+
+        "dev" {
+            if ($yarn) { yarn dev } else { npm run dev }
+        }
+
+        "build" {
+            if ($yarn) { yarn build } else { npm run build }
+        }
+
+        "preview" {
+            if ($yarn) { yarn start } else { npm run start }
+        } 
+
+        "lint" {
+            if ($yarn) { yarn lint } else { npm run lint }
+        } 
+
+        "prisma" {
+            if ($yarn) {
+                if ($args -contains "gen-only") {
+                    yarn prisma generate 
+                } elseif ($args -contains "push-only") {
+                    yarn prisma db push
+                } else {
+                    yarn prisma generate 
+                    if ($LASTEXITCODE -ne 0) { 
+                        Write-Error "Prisma generate failed."
+                        return
+                    }
+                    yarn prisma db push
+                }  
+            } else { 
+                if ($args -contains "gen-only") {
+                    npx prisma generate 
+                } elseif ($args -contains "push-only") {
+                    npx prisma db push
+                } else {
+                    npx prisma generate 
+                    if ($LASTEXITCODE -ne 0) { 
+                        Write-Error "Prisma generate failed."
+                        return
+                    }
+                    npx prisma db push
+                } 
+            }
+        } 
+        default{
+
+            Write-Error "Invalid action. Choose: 'nxt new <project-name>', 'nxt start', 'nxt build','nxt preview', 'nxt lint' or 'nxt prisma - nxt prisma | nxt prisma gen-only nxt prisma push-only'"
+        }
+        }
     }
+
+function ws(){
+return (z "@workspace")
+}
+function projects(){
+return (z "@projects")
 }
 
+function update_log {
+    param(
+        [string]$command,
+        [string]$fullPath
+    )
 
+    $logFile = "C:\temp\whereis_log.txt" 
+
+    "$command,$fullPath" | Out-File -FilePath $logFile -Append 
+}
+
+function get_from_log {
+    param(
+        [string]$command
+    )
+
+    $logFile = "C:\temp\whereis_log.txt"
+
+    if (-not (Test-Path $logFile)) {
+        return $null
+    }
+
+    $logEntries = Get-Content $logFile 
+    foreach ($entry in $logEntries) {
+        $cmd, $path = $entry.Split(",")
+        if ($cmd -eq $command) {
+            return $path
+        }
+    }
+
+    return $null 
+}
 
 function whereis {
-    param (
+    param(
         [string]$command
     )
 
@@ -76,20 +148,53 @@ function whereis {
         return
     }
 
-    $commandPath = Get-Command -Name $command -ErrorAction SilentlyContinue |
-                   Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
+    Import-Module Wmi 
 
-    if ($commandPath) {
-        Write-Output "Location of '$command': $commandPath"
-    } else {
-        $isFile = Test-Path $command
-        if ($isFile) {
-            Write-Output "'$command' is a file located at: $((Get-Item $command).FullName)"
-        } else {
-            Write-Output "'$command' not found in the PATH."
+    $twoDaysAgo = (Get-Date).AddDays(-2)
+    $userPath = "C:\Users\Bethel"
+
+    # -- Check Log --
+    $fullPath = get_from_log $command
+    if ($fullPath) {
+        Write-Output "File found: $fullPath"
+        Write-Output "Template command: cd $fullPath"
+        return
+    }
+
+    # --- C Drive Search (Limited scope) ---
+    $cDriveSearchFolders = "Documents", "Music", "Downloads", "Desktop", "Videos"
+    foreach ($folder in $cDriveSearchFolders) {
+        $searchPath = Join-Path $userPath $folder
+        $searchResults = Get-ChildItem -Path $searchPath -Filter "*$command*" -Recurse -ErrorAction SilentlyContinue | 
+                         Select-Object Name, FullName, CreationTime
+
+        if ($searchResults) {
+            $searchResults | Format-Table -AutoSize
+            return # Stop searching if found on C drive
         }
     }
+
+    # --- E Drive Search (Full search, update log) ---
+    $eDrive = "E:\"
+    $searchResults = Get-ChildItem -Path $eDrive -Filter "*$command*" -Recurse -ErrorAction SilentlyContinue | 
+                     Select-Object Name, FullName, CreationTime, LastWriteTime
+
+    # Update Log with New or Recently Modified Files
+    if ($searchResults) {
+        $searchResults | Where-Object { $_.CreationTime -ge $twoDaysAgo -or $_.LastWriteTime -ge $twoDaysAgo} | 
+            ForEach-Object {
+                update_log $_.Name $_.FullName 
+            }
+    }
+
+    # --- Search Results ---
+    if ($searchResults) {
+        $searchResults | Format-Table -AutoSize
+    } else {
+        Write-Output "'$command' and similar files/folders not found in any drives."
+    } 
 }
+
 
 
 function touch {set-content -Path ($args[0]) -Value ($null)} 
